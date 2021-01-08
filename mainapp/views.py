@@ -16,10 +16,10 @@ links_menu = [
     ]
 
 
-def get_basket(user):
-    if user.is_authenticated:
-        return Basket.objects.filter(user=user)
-    return []
+# def get_basket(user):
+#     if user.is_authenticated:
+#         return Basket.objects.filter(user=user)
+#     return []
 
 
 def get_hot_product():
@@ -31,13 +31,11 @@ def get_same_products(hot_product):
     return Product.objects.filter(category__pk=hot_product.category.pk).exclude(pk=hot_product.pk)[:3]
 
 
-
 def main(request):
     products = Product.objects.all()[:4]
     context = {
         'title': 'Главная',
         'products': products,
-        'basket': get_basket(request.user),
     }
     return render(request, 'mainapp/index.html', context)
 
@@ -66,7 +64,6 @@ def products(request, pk=None, page=1):
             'links_menu': links_menu,
             'products': product_paginator,
             'category': category,
-            'basket': get_basket(request.user),
         }
 
         return render(request, 'mainapp/products_list.html', context)
@@ -77,7 +74,6 @@ def products(request, pk=None, page=1):
         'title': 'Продукты',
         'links_menu': links_menu,
         'same_products': same_products,
-        'basket': get_basket(request.user),
         'hot_product': hot_product,
     }
     return render(request, 'mainapp/products.html', context)
@@ -88,8 +84,6 @@ def product(request, pk):
     context = {
         'title': title,
         'links_menu': ProductCategory.objects.all(),
-        'product': get_object_or_404(Product, pk=pk),
-        'basket': get_basket(request.user),
     }
     return render(request, 'mainapp/product.html', context)
 
@@ -102,7 +96,6 @@ def contacts(request):
         'email': 'Email',
         'address': 'Адрес',
         'contacts': json_data,
-        'basket': get_basket(request.user),
     }
 
     return render(request, 'mainapp/contact.html', context)
