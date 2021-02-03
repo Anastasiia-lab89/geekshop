@@ -19,6 +19,7 @@ class ShopUser(AbstractUser):
             return False
         return True
 
+
 class ShopUserProfile(models.Model):
 
     MALE = 'M'
